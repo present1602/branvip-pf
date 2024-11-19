@@ -1,0 +1,203 @@
+
+{
+  administrativeMeasureInfo: [
+    {
+      processStateCode: [Array],
+      receiptSendDate: [Array],
+      receiptSendDocumentEngName: [Array],
+      receiptSendDocumentName: [Array],
+      receiptSendNumber: [Array],
+      seq: [Array]
+    },
+    {
+      processStateCode: [Array],
+      receiptSendDate: [Array],
+      receiptSendDocumentEngName: [Array],
+      receiptSendDocumentName: [Array],
+      receiptSendNumber: [Array],
+      seq: [Array]
+    },
+    {
+      processStateCode: [Array],
+      receiptSendDate: [Array],
+      receiptSendDocumentEngName: [Array],
+      receiptSendDocumentName: [Array],
+      receiptSendNumber: [Array],
+      seq: [Array]
+    },
+    {
+      processStateCode: [Array],
+      receiptSendDate: [Array],
+      receiptSendDocumentEngName: [Array],
+      receiptSendDocumentName: [Array],
+      receiptSendNumber: [Array],
+      seq: [Array]
+    },
+    {
+      processStateCode: [Array],
+      receiptSendDate: [Array],
+      receiptSendDocumentEngName: [Array],
+      receiptSendDocumentName: [Array],
+      receiptSendNumber: [Array],
+      seq: [Array]
+    }
+  ],
+  biblioSummaryInfo: [
+    {
+      appReferenceNumber: [Array],
+      applicationDate: [Array],
+      applicationNumber: [Array],
+      classVersion: [Array],
+      designateDate: [Array],
+      familyFlag: [Array],
+      imageFlag: [Array],
+      internationalRegisterDate: [Array],
+      internationalRegisterNumber: [Array],
+      lastDisposalCode: [Array],
+      lastDisposalDate: [Array],
+      originalApplicationFlag: [Array],
+      priorityFlag: [Array],
+      productName: [Array],
+      productNameEng: [Array],
+      publicationDate: [Array],
+      publicationFlag: [Array],
+      publicationNumber: [Array],
+      rePublicationFlag: [Array],
+      regReferenceNumber: [Array],
+      registerFlag: [Array],
+      registerStatus: [Array],
+      registrationDate: [Array],
+      registrationNumber: [Array],
+      registrationPublicDate: [Array],
+      registrationPublicGazetteFlag: [Array],
+      registrationPublicNumber: [Array],
+      retroDate: [Array],
+      retroDivisionCode: [Array],
+      tmDivisionCode: [Array],
+      tmNameAcquisitionDate: [Array],
+      trademarkDivisionCode: [Array],
+      trlFlag: [Array]
+    }
+  ],
+  asignProduct: [
+    {
+      mainCode: [Array],
+      productName: [Array],
+      productNameEng: [Array],
+      seq: [Array],
+      subCode: [Array]
+    },
+    {
+      mainCode: [Array],
+      productName: [Array],
+      productNameEng: [Array],
+      seq: [Array],
+      subCode: [Array]
+    },
+    {
+      mainCode: [Array],
+      productName: [Array],
+      productNameEng: [Array],
+      seq: [Array],
+      subCode: [Array]
+    },
+    {
+      mainCode: [Array],
+      productName: [Array],
+      productNameEng: [Array],
+      seq: [Array],
+      subCode: [Array]
+    },
+    {
+      mainCode: [Array],
+      productName: [Array],
+      productNameEng: [Array],
+      seq: [Array],
+      subCode: [Array]
+    },
+    {
+      mainCode: [Array],
+      productName: [Array],
+      productNameEng: [Array],
+      seq: [Array],
+      subCode: [Array]
+    },
+    {
+      mainCode: [Array],
+      productName: [Array],
+      productNameEng: [Array],
+      seq: [Array],
+      subCode: [Array]
+    },
+    {
+      mainCode: [Array],
+      productName: [Array],
+      productNameEng: [Array],
+      seq: [Array],
+      subCode: [Array]
+    },
+    {
+      mainCode: [Array],
+      productName: [Array],
+      productNameEng: [Array],
+      seq: [Array],
+      subCode: [Array]
+    },
+    {
+      mainCode: [Array],
+      productName: [Array],
+      productNameEng: [Array],
+      seq: [Array],
+      subCode: [Array]
+    },
+    {
+      mainCode: [Array],
+      productName: [Array],
+      productNameEng: [Array],
+      seq: [Array],
+      subCode: [Array]
+    },
+    {
+      mainCode: [Array],
+      productName: [Array],
+      productNameEng: [Array],
+      seq: [Array],
+      subCode: [Array]
+    }
+  ],
+  agentInfo: [
+    {
+      agentAddress: [Array],
+      agentCode: [Array],
+      nameKoreanLong: [Array],
+      nationalCode: [Array],
+      seq: [Array]
+    }
+  ],
+  applicantInfo: [
+    {
+      applicantAddress: [Array],
+      applicantCode: [Array],
+      nameKoreanLong: [Array],
+      nationalCode: [Array],
+      seq: [Array]
+    }
+  ],
+  sampleImageInfo: [ { imageName: [Array], path: [Array], smallPath: [Array] } ],
+  similarityCodeInfo: [
+    { similarCode: [Array] },
+    { similarCode: [Array] },
+    { similarCode: [Array] },
+    { similarCode: [Array] },
+    { similarCode: [Array] },
+    { similarCode: [Array] },
+    { similarCode: [Array] }
+  ],
+  vfersionInfo: [ { cd: [Array], enNm: [Array], koNm: [Array], ver: [Array] } ],
+  viennaCodeInfo: undefined,
+  publicationInfo: [ { path: [Array], pdfName: [Array] } ],
+  similarTrademarks: [],
+  rejectPdfUrl: '',
+  moods: [],
+  colors: []
+}

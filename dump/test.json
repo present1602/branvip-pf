@@ -1,0 +1,123 @@
+
+
+[payload]
+{
+  brandName: '회사·브랜드 이름',
+  brandMeaning: '회사·브랜드 이름의 의미\n',
+  brandService: '사업 분야\n',
+  targetGender: 'MALE',
+  selectedMoods: [
+    '격식'
+  ],
+  isLogoIncluded: true,
+  trademarkNameKr: '한글 상표명',
+  trademarkNameEn: '외국어 상표명',
+  serviceIntroduction: '제품·서비스 소개\n',
+  productTypeCodes: [
+    '제35류 광고업, 쇼핑몰업',
+    '제41류 교육업, 문화활동업',
+    '제42류 연구개발업, 디자인업'
+  ],
+  type: 'ALL',
+  tenPercentDiscountAmount: 195000,
+  applicationMultiplier: 3,
+  totalPatentOfficeFee: 46000,
+  finalPaymentPrice: 2068500
+}
+
+
+[items]
+
+[
+  {
+    id: 3,
+    title: '로고 3종',
+    price: 1800000,
+    periodText: '15일',
+    description: '로고 2종 서비스에서 시안 개수와 수정 횟수가 수가되며 로고 사용 가이드가 담긴 로고 시스템을 제공합니다.',
+    regularPrice: null,
+    patentOfficeFee: null,
+    type: 'DESIGN',
+    features: [
+      '수정 5회',
+      '등록 예측'
+    ],
+    primaryFeatures: [
+      '시안 3개',
+      '로고 시스템'
+    ],
+    order: 2
+  },
+  {
+    id: 9,
+    title: '간편 출원',
+    price: 50000,
+    periodText: null,
+    description: '내 상표에 맞는 권리를 추천받고 안전하게 출원서를 제출합니다. ',
+    regularPrice: 100000,
+    patentOfficeFee: 46000,
+    type: 'APPLICATION_WITH_DESIGN',
+    features: [
+      '권리범위 설정',
+      '출원서 제출',
+      '등록비용 별도'
+    ],
+    primaryFeatures: [],
+    order: 0
+  }
+]
+
+[references]
+
+[
+  {
+    applicationNumber: '4020220053114',
+    imageUrl: 'http://plus.kipris.or.kr/kiprisplusws/fileToss.jsp?arg=ad7a17eeeef6e4ea4b5e22ef00dd3e2942dee2feafab2a09ad2871a34c70cc548d8bdde58310333b23b6256b414cd5534c583d12170294da'
+  },
+  {
+    applicationNumber: '4020240060426',
+    imageUrl: 'http://plus.kipris.or.kr/kiprisplusws/fileToss.jsp?arg=ad7a17eeeef6e4ea4b5e22ef00dd3e29a04489ad4cba26e554c16724bf8c48c5336f09de1814615cf3805a6125daa0bb35f3eb8022cd1e8f'
+  },
+  {
+    applicationNumber: '4020170150505',
+    imageUrl: 'http://plus.kipris.or.kr/kiprisplusws/fileToss.jsp?arg=ad7a17eeeef6e4ea4b5e22ef00dd3e29a5e93bcaa0e35e07296d147241122d1c9aed11a4651c0b2325480a8261343677be97eb16dc6fc216'
+  },
+  {
+    applicationNumber: '4020210261918',
+    imageUrl: 'http://plus.kipris.or.kr/kiprisplusws/fileToss.jsp?arg=ad7a17eeeef6e4ea4b5e22ef00dd3e2940f80548c1358af37ec70d6dd942f111123d91d36d7f9590cf20964249012a5c929cac3649b69e20'
+  },
+  {
+    applicationNumber: '4020210237044',
+    imageUrl: 'http://plus.kipris.or.kr/kiprisplusws/fileToss.jsp?arg=ad7a17eeeef6e4ea4b5e22ef00dd3e2940f80548c1358af37b73eebdb5cb0723eb249c8b31f59ce6b8392302457d31ffafffa5f136d6292b'
+  },
+  {
+    applicationNumber: '4020210236156',
+    imageUrl: 'http://plus.kipris.or.kr/kiprisplusws/fileToss.jsp?arg=ad7a17eeeef6e4ea4b5e22ef00dd3e2940f80548c1358af3db1297c0bc19c804c9af339c66add107fac05b2721b2ff445bb21f9dd2ddce6b'
+  },
+  {
+    applicationNumber: '4020210259435',
+    imageUrl: 'http://plus.kipris.or.kr/kiprisplusws/fileToss.jsp?arg=ad7a17eeeef6e4ea4b5e22ef00dd3e2940f80548c1358af37799d59be39232d819488bb17a6a1d847f2eefe39caa104dd75f098a5fc6c4ac'
+  },
+  {
+    applicationNumber: '4020210261899',
+    imageUrl: 'http://plus.kipris.or.kr/kiprisplusws/fileToss.jsp?arg=ad7a17eeeef6e4ea4b5e22ef00dd3e2940f80548c1358af37ec70d6dd942f1113c6df6aec85bf5bf2bf9c96f4a92fd21353470f1d4fe016e'
+  }
+]
+
+2232 {
+administrativeMeasureInfoArray: [ { administrativeMeasureInfo: [Array] } ],
+agentInfoArray: [ { agentInfo: [Array] } ],
+applicantInfoArray: [ { applicantInfo: [Array] } ],
+applicationNumberInfoArray: [ '' ],
+asignProductArray: [ { asignProduct: [Array] } ],
+biblioSummaryInfoArray: [ { biblioSummaryInfo: [Array] } ],
+originalApplicationIndicationArray: [ '' ],
+priorityClaimInfoArray: [ '' ],
+publicationInfoArray: [ { publicationInfo: [Array] } ],
+revisionPublicationInfoArray: [ '' ],
+sampleImageInfoArray: [ { sampleImageInfo: [Array] } ],
+similarityCodeInfoArray: [ { similarityCodeInfo: [Array] } ],
+vfersionInfoArray: [ { vfersionInfo: [Array] } ],
+viennaCodeInfoArray: [ '' ]
+}
+

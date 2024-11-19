@@ -1,0 +1,624 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model ApplicantTrademark {
+  id                String        @id @default(cuid())
+  createdAt         DateTime      @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt         DateTime      @default(now()) @map("updated_at") @db.Timestamptz(6)
+  applicantId       String        @map("applicant_id")
+  applicationNumber String        @map("application_number")
+  imageUrl          String        @map("image_url")
+  status            String
+  userApplicants    UserApplicant @relation(fields: [applicantId], references: [id], onDelete: Cascade)
+}
+
+model Inquiry {
+  id         Int      @id @default(autoincrement())
+  type       String
+  title      String
+  name       String
+  email      String
+  content    String
+  created_at DateTime @default(now()) @db.Timestamptz(6)
+  isMailing  Boolean? @map("is_mailing")
+}
+
+model PasswordResetToken {
+  token     String   @id @default(cuid())
+  userEmail String
+  expiresAt DateTime
+  users     User     @relation(fields: [userEmail], references: [email])
+
+  @@index([userEmail], map: "user_idx")
+}
+
+model Account {
+  id                       String   @id @default(cuid())
+  userId                   String   @map("user_id")
+  expired_at               DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  type                     String
+  provider                 String
+  providerAccountId        String   @map("provider_account_id")
+  socialEmail              String?  @map("social_email")
+  refresh_token            String?  @map("refresh_token")
+  access_token             String?  @map("access_token")
+  expires_at               Int?     @map("expires_at")
+  token_type               String?  @default("bearer")
+  scope                    String?
+  id_token                 String?  @map("id_token")
+  session_state            String?  @map("session_state")
+  refresh_token_expires_in Int?     @map("refresh_token_expires_in")
+  user                     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model AuthCode {
+  id        Int      @id @default(autoincrement())
+  email     String
+  code      String
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  @@map("auth_code")
+}
+
+model Banner {
+  id             Int      @id @default(autoincrement())
+  title          String
+  imageUrlPc     String   @map("image_url_pc")
+  imageUrlMobile String   @map("image_url_mobile")
+  startDate      DateTime @map("start_date")
+  endDate        DateTime @map("end_date")
+  createdAt      DateTime @default(now()) @map("created_at")
+  description    String?
+  link           String?
+
+  @@map("banners")
+}
+
+model Contact {
+  id                  Int                  @id(map: "contact_pk") @default(autoincrement())
+  contactType         String?              @map("contact_type") @db.VarChar
+  contactMessage      String?              @map("contact_message") @db.VarChar
+  phoneNumber         String?              @map("phone_number") @db.VarChar
+  name                String?              @db.VarChar
+  email               String?              @db.VarChar
+  status              String               @default("new") @db.VarChar
+  createdAt           DateTime             @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt           DateTime             @default(now()) @map("updated_at") @db.Timestamptz(6)
+  contactPrice        ContactPrice[]
+  contactTrademark    ContactTrademark[]
+  contactTrademark_v2 ContactTrademarkV2[]
+
+  @@map("contact")
+}
+
+model ContactPrice {
+  id        Int      @id @default(autoincrement())
+  contactId Int      @map("contact_id")
+  title     String
+  price     Int
+  count     Int
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  contact   Contact  @relation(fields: [contactId], references: [id])
+
+  @@map("contact_price")
+}
+
+model ContactTrademark {
+  id          Int       @id(map: "contact_trademark_pk") @default(autoincrement())
+  contactId   Int       @map("contact_id")
+  trademarkId Int       @map("trademark_id")
+  contact     Contact   @relation(fields: [contactId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "contact_trademark_contact_id_fk")
+  trademark   Trademark @relation(fields: [trademarkId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "contact_trademark_trademark_id_fk")
+
+  @@map("contact_trademark")
+}
+
+model ContactTrademarkV2 {
+  id                Int     @id @default(autoincrement())
+  contactId         Int     @map("contact_id")
+  applicationNumber String  @map("application_number")
+  imageUrl          String  @map("image_url")
+  contact           Contact @relation(fields: [contactId], references: [id])
+
+  @@map("contact_trademark_v2")
+}
+
+model HelpGuide {
+  id        Int      @id @default(autoincrement())
+  title     String
+  content   String
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  seq       Int      @default(0)
+
+  @@map("help_guide")
+}
+
+model Label {
+  id             Int              @id(map: "label_pk") @unique(map: "label_id_uindex") @default(autoincrement())
+  title          String?          @db.VarChar
+  type           String           @default("mood") @db.VarChar
+  color          String?          @db.VarChar(10)
+  bgColor        String?          @map("bg-color") @db.VarChar(10)
+  thumbnailUrl   String?          @map("thumbnail_url") @db.VarChar
+  imageUrl       String?          @map("image_url") @db.VarChar
+  description    String?
+  trademarkLabel TrademarkLabel[]
+
+  @@map("label")
+}
+
+model LogoType {
+  id            Int             @id @default(autoincrement())
+  label         String
+  subLabel      String          @map("sub_label")
+  imagePath     String          @map("image_path")
+  recommendLogo RecommendLogo[]
+
+  @@map("logo_type")
+}
+
+model OrderItem {
+  id         String      @id @default(cuid())
+  created_at DateTime    @default(now()) @db.Timestamptz(6)
+  orderId    String      @map("order_id")
+  type       PricingType
+  title      String
+  price      Int
+  features   String[]
+  orders     Order       @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@map("order_items")
+}
+
+model OrderReferenceTrademark {
+  id                String   @id @default(cuid())
+  createdAt         DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  orderId           String   @map("order_id")
+  applicationNumber String   @map("application_number")
+  imageUrl          String   @map("image_url")
+  orders            Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@map("order_reference_trademarks")
+}
+
+model Order {
+  id                        String                    @id @default(cuid())
+  orderNumber               String                    @default("A00") @map("order_number")
+  createdAt                 DateTime                  @default(now()) @map("created_at") @db.Timestamptz(6)
+  userId                    String                    @map("user_id")
+  applicantId               String?                   @map("applicant_id")
+  type                      OrderType
+  status                    OrderStatus               @default(INIT)
+  operationStatus           OperationStatus           @default(PENDING) @map("operation_status")
+  whatToInclude             String?                   @map("what_to_include")
+  designRequests            String?                   @map("design_requests")
+  brandService              String?                   @map("brand_service")
+  isLogoIncluded            Boolean?                  @default(false) @map("is_logo_included")
+  isWordmarkIncluded        Boolean?                  @default(false) @map("is_wordmark_included")
+  trademarkNameKr           String?                   @map("trademark_name_kr")
+  trademarkNameEn           String?                   @map("trademark_name_en")
+  targetGender              TargetGender?             @map("target_gender")
+  selectedMoods             String[]                  @map("selected_moods")
+  productTypeCodes          String[]                  @map("product_type_codes")
+  referenceAiImageUrls      String[]                  @map("reference_ai_image_urls")
+  finalPaymentPrice         Int                       @map("total_price")
+  serviceIntroduction       String?                   @map("service_introduction")
+  applicationMultiplier     Int                       @default(0) @map("application_multiplier")
+  tenPercentDiscountAmount  Int                       @default(0) @map("ten_percent_discount_amount")
+  totalPatentOfficeFee      Int                       @default(0) @map("total_patent_office_fee")
+  simultaneousTrademarkKnEn Boolean?                  @default(false) @map("simultaneous_trademark_kn_en")
+  logoType                  String?                   @map("logo_type")
+  recommendLogoImagePath    String[]                  @map("recommend_logo_image_path")
+  colors                    String[]
+  otherRequest              String?                   @map("other_request")
+  uploadImageUrl            String[]                  @map("upload_image_url")
+  priorityScreening         String[]                  @map("priority_screening")
+  items                     OrderItem[]
+  referenceTrademarks       OrderReferenceTrademark[]
+  user                      User                      @relation(fields: [userId], references: [id], onDelete: NoAction)
+  applicant                 UserApplicant?            @relation(fields: [applicantId], references: [id], onDelete: SetNull)
+
+  @@map("orders")
+}
+
+model Pricing {
+  id              Int         @id @default(autoincrement())
+  title           String
+  price           Int
+  regularPrice    Int?        @map("regular_price")
+  type            PricingType
+  features        String[]
+  primaryFeatures String[]    @map("primary_features")
+  order           Int         @default(0)
+  periodText      String?     @map("period_text")
+  description     String?
+  patentOfficeFee Int?        @map("patent_office_fee")
+
+  @@index([type], map: "pricing_type_index")
+  @@map("pricing")
+}
+
+model ProductItem {
+  id              Int           @id @default(autoincrement())
+  productSelectId Int           @map("product_select_id")
+  code            String
+  title           String
+  index           Int
+  products        ProductSelect @relation(fields: [productSelectId], references: [id], onDelete: Cascade)
+
+  @@map("product_items")
+}
+
+model ProductSelect {
+  id       Int           @id @default(autoincrement())
+  imgPath  String        @map("img_path")
+  title    String
+  products ProductItem[]
+
+  @@map("product_select")
+}
+
+model ProductType {
+  code                   String                 @id(map: "product_type_pk") @unique(map: "product_type_code_uindex") @db.VarChar(2)
+  title                  String                 @db.VarChar
+  isShown                Boolean                @default(false) @map("is_shown")
+  trademark_product_type TrademarkProductType[]
+
+  @@map("product_type")
+}
+
+model RecommendLogo {
+  id         Int      @id @default(autoincrement())
+  imagePath  String   @map("image_path")
+  logoTypeId Int      @map("logo_type_id")
+  bgColor    String   @default("FFFFFF") @map("bg_color")
+  logoType   LogoType @relation(fields: [logoTypeId], references: [id])
+
+  @@map("recommend_logo")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique @map("session_token")
+  created_at   DateTime @default(now()) @db.Timestamptz(6)
+  userId       String   @map("user_id")
+  expires      DateTime
+  users        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model Trademark {
+  id                          Int                    @id(map: "trademark_pk") @unique(map: "trademark_id_uindex") @default(autoincrement())
+  applicationNumber           String?                @unique(map: "trademark_application_number_uindex") @map("application_number") @db.VarChar
+  applicationDate             DateTime?              @map("application_date") @db.Date
+  appReferenceNumber          String?                @unique(map: "trademark_app_reference_number_uindex") @map("app_reference_number") @db.VarChar
+  regReferenceNumber          String?                @map("reg_reference_number") @db.VarChar
+  registrationNumber          String?                @map("registration_number") @db.VarChar
+  registrationDate            DateTime?              @map("registration_date") @db.Date
+  publicNumber                String?                @map("public_number") @db.VarChar
+  publicDate                  DateTime?              @map("public_date") @db.Date
+  trademarkName               String?                @map("trademark_name") @db.VarChar
+  trademarkNameNameEn         String?                @map("trademark_name_name_en") @db.VarChar
+  lastDisposalCodeName        String?                @map("last_disposal_code_name") @db.VarChar
+  lastDisposalDate            DateTime?              @map("last_disposal_date") @db.Date
+  internationalRegisterNumber String?                @unique(map: "trademark_international_register_number_uindex") @map("international_register_number") @db.VarChar
+  internationalRegisterDate   DateTime?              @map("international_register_date") @db.Date
+  typeCode                    String?                @map("type_code") @db.VarChar
+  kindCodeName                String?                @map("kind_code_name") @db.VarChar
+  applicationStatus           String?                @map("application_status") @db.VarChar
+  title                       String?                @map("title") @db.VarChar
+  imageUrl                    String?                @map("image_url") @db.VarChar
+  thumbnailUrl                String?                @map("thumbnail_url") @db.VarChar
+  applicantName               String?                @map("applicant_name") @db.VarChar
+  agentName                   String?                @map("agent_name") @db.VarChar
+  registrationRightholderName String?                @map("registration_rightholder_name") @db.VarChar
+  createdAt                   DateTime               @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt                   DateTime               @default(now()) @map("updated_at") @db.Timestamptz(6)
+  isConnectedKipris           Boolean?               @map("is_connected_kipris")
+  applicantCode               String?                @map("applicant_code") @db.VarChar
+  applicantAddress            String?                @map("applicant_address") @db.VarChar
+  agentAddress                String?                @map("agent_address") @db.VarChar
+  agentCode                   String?                @map("agent_code") @db.VarChar
+  LogoScrap                   LogoScrap[]
+  contactTrademark            ContactTrademark[]
+  trademarkLabel              TrademarkLabel[]
+  trademarkProductType        TrademarkProductType[]
+  trademarkViennaCode         TrademarkViennaCode[]
+
+  @@map("trademark")
+}
+
+model TrademarkLabel {
+  id          Int       @id(map: "trademark_label_pk") @unique(map: "trademark_label_id_uindex") @default(autoincrement())
+  trademarkId Int       @map("trademark_id")
+  labelId     Int       @map("label_id")
+  label       Label     @relation(fields: [labelId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "trademark_label_label_id_fk")
+  trademark   Trademark @relation(fields: [trademarkId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "trademark_label_trademark_id_fk")
+
+  @@index([labelId], map: "trademark_label_label_id_index")
+  @@index([trademarkId], map: "trademark_label_trademark_id_index")
+  @@map("trademark_label")
+}
+
+model TrademarkProductType {
+  trademarkId     Int         @map("trademark_id")
+  productTypeCode String      @map("product_type_code") @db.VarChar(2)
+  createdAt       DateTime    @default(now()) @map("created_at") @db.Timestamptz(6)
+  productType     ProductType @relation(fields: [productTypeCode], references: [code], onDelete: NoAction, onUpdate: NoAction, map: "trademark_product_type_product_type_code_fk")
+  trademark       Trademark   @relation(fields: [trademarkId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "trademark_product_type_trademark_id_fk")
+
+  @@unique([trademarkId, productTypeCode])
+  @@index([productTypeCode], map: "trademark_product_type_product_type_code_index")
+  @@index([trademarkId], map: "trademark_product_type_trademark_id_index")
+  @@map("trademark_product_type")
+}
+
+model TrademarkViennaCode {
+  id                                                  Int        @id(map: "trademark_vienna_code_pk") @unique(map: "trademark_vienna_code_id_uindex") @default(autoincrement())
+  trademarkId                                         Int        @map("trademark_id")
+  viennaCode                                          String     @map("vienna_code") @db.VarChar(6)
+  createdAt                                           DateTime   @default(now()) @map("created_at") @db.Timestamptz(6)
+  trademark                                           Trademark  @relation(fields: [trademarkId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "trademark_vienna_code_trademark_id_fk")
+  viennaCodeTrademarkViennaCodeViennaCodeToviennaCode ViennaCode @relation("trademark_vienna_code_vienna_codeTovienna_code", fields: [viennaCode], references: [code], onDelete: NoAction, onUpdate: NoAction, map: "trademark_vienna_code_vienna_code_code_fk")
+
+  @@index([trademarkId], map: "trademark_vienna_code_trademark_id_index")
+  @@index([viennaCode], map: "trademark_vienna_code_vienna_code_index")
+  @@map("trademark_vienna_code")
+}
+
+model UserApplicant {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt DateTime @default(now()) @map("updated_at") @db.Timestamptz(6)
+
+  userId String         @map("user_id")
+  type   ApplicantType?
+
+  name   String?
+  nameEn String? @map("name_en")
+
+  companyName   String? @map("company_name")
+  companyNameEn String? @map("company_name_en")
+
+  email      String?
+  ownerEmail String? @map("owner_email")
+
+  registerNumber String? @map("register_number")
+
+  phoneNumber      String? @map("phone_number")
+  ownerPhoneNumber String? @map("owner_phone_number")
+
+  applicantNumber String? @map("applicant_number")
+
+  bizRegistrationNumber  String? @map("biz_registration_number")
+  corpRegistrationNumber String? @map("corp_registration_number")
+
+  signatureUrl String? @default("") @map("signature_url")
+
+  address         String?
+  addressDetail   String? @map("address_detail")
+  addressPostCode String? @map("address_post_code")
+
+  isVerification Boolean @default(false) @map("is_verification")
+
+  trademarks ApplicantTrademark[]
+  user       User                 @relation(fields: [userId], references: [id], onDelete: NoAction)
+  Order      Order[]
+  signiture  SignitureImage?
+
+  @@map("user_applicants")
+}
+
+model SignitureImage {
+  id              Int           @id @default(autoincrement())
+  fileName        String
+  imageUrl        String        @map("image_url")
+  createdAt       DateTime      @default(now()) @map("created_at") @db.Timestamptz(6)
+  userApplicantId String        @unique @map("user_applicant_id")
+  isActive        Boolean       @default(true) @map("is_active")
+  UserApplicant   UserApplicant @relation(fields: [userApplicantId], references: [id], onDelete: Cascade)
+
+  @@map("signiture_image")
+}
+
+model UserBoardComment {
+  id        String    @id @default(cuid())
+  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  userId    String    @map("user_id")
+  boardId   String    @map("board_id")
+  isAdmin   Boolean   @default(false) @map("is_admin")
+  content   String
+  board     UserBoard @relation(fields: [boardId], references: [id], onDelete: Cascade)
+  user      User      @relation(fields: [userId], references: [id], onDelete: NoAction)
+  isDeleted Boolean   @default(false) @map("is_deleted")
+
+  @@map("user_board_comments")
+}
+
+model UserBoard {
+  id             String             @id @default(cuid())
+  createdAt      DateTime           @default(now()) @map("created_at") @db.Timestamptz(6)
+  userId         String             @map("user_id")
+  isAdmin        Boolean            @default(false) @map("is_admin")
+  title          String
+  content        String
+  actionLink     String?            @map("action_link")
+  comments       UserBoardComment[]
+  user           User               @relation(fields: [userId], references: [id], onDelete: NoAction)
+  userBoardMedia UserBoardMedia[]
+
+  @@map("user_boards")
+}
+
+model UserBoardMedia {
+  id          Int       @id @default(autoincrement())
+  fileName    String
+  imageUrl    String    @map("image_url")
+  createdAt   DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  userBoardId String    @map("user_board_id")
+  userBoard   UserBoard @relation(fields: [userBoardId], references: [id], onDelete: Cascade)
+
+  @@map("user_board_media")
+}
+
+model UserPaymentMethod {
+  id         String   @id @default(cuid())
+  createdAt  DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  userId     String   @map("user_id")
+  cardName   String   @map("card_name")
+  cardNumber String   @map("card_number")
+  billingKey String   @map("billing_key")
+  users      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("user_payment_methods")
+}
+
+model User {
+  id                 String               @id @default(cuid())
+  createdAt          DateTime             @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt          DateTime             @default(now()) @map("updated_at") @db.Timestamptz(6)
+  lastLoggedIn       DateTime             @default(now()) @map("last_logged_in") @db.Timestamptz(6)
+  name               String?
+  email              String               @unique
+  emailVerified      DateTime?            @map("email_verified")
+  image              String?
+  phoneNumber        String?              @map("phone_number")
+  agreeServiceTerms  Boolean              @default(true) @map("agree_service_terms")
+  agreePrivacyTerms  Boolean?             @default(true) @map("agree_privacy_terms")
+  agreedTermsAt      DateTime?            @map("agreed_terms_at")
+  password           String?
+  isAdmin            Boolean              @default(false) @map("is_admin")
+  loginType          String               @default("email") @map("login_type")
+  status             UserStatus           @default(NORMAL)
+  isDeleted          Boolean              @default(false)
+  LogoScrap          LogoScrap[]
+  passwordResetToken PasswordResetToken[]
+  accounts           Account[]
+  orders             Order[]
+  sessions           Session[]
+  applicant          UserApplicant[]
+  userBoardComments  UserBoardComment[]
+  boards             UserBoard[]
+  userPaymentMethods UserPaymentMethod[]
+
+  @@map("users")
+}
+
+model DroppedUserLog {
+  id        Int      @id @default(autoincrement())
+  userId    String   @map("user_id")
+  name      String?
+  email     String?
+  droppedAt DateTime @default(now()) @map("dropped_at") @db.Timestamptz(6)
+
+  @@map("dropped_user_log")
+}
+
+model Verificationtokens {
+  identifier String
+  token      String   @unique
+  createdAt  DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  expires    DateTime
+
+  @@unique([identifier, token])
+  @@map("verificationtokens")
+}
+
+model ViennaCode {
+  code                                                                 String                @id(map: "vienna_code_pk") @unique(map: "vienna_code_code_uindex") @db.VarChar(6)
+  parentCode                                                           String?               @map("parent_code") @db.VarChar(6)
+  title                                                                String?               @db.VarChar
+  note                                                                 String?               @db.VarChar
+  trademark_vienna_code_trademark_vienna_code_vienna_codeTovienna_code TrademarkViennaCode[] @relation("trademark_vienna_code_vienna_codeTovienna_code")
+  viennaCode                                                           ViennaCode?           @relation("vienna_codeTovienna_code", fields: [parentCode], references: [code], onDelete: NoAction, onUpdate: NoAction, map: "vienna_code_vienna_code_code_fk")
+  otherViennaCode                                                      ViennaCode[]          @relation("vienna_codeTovienna_code")
+
+  @@map("vienna_code")
+}
+
+model LogoScrap {
+  id          Int       @id @default(autoincrement())
+  userId      String    @map("user_id")
+  trademarkId Int       @map("trademark_id")
+  createdAt   DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  trademark   Trademark @relation(fields: [trademarkId], references: [id], onDelete: Cascade)
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("logo_scrap")
+}
+
+model PriceMeasurement {
+  id              Int            @id @default(autoincrement()) @map("id")
+  label           String
+  index           Int?
+  price           Int
+  regularPrice    Int?           @map("regular_price")
+  type            PricingType
+  serviceList     PriceService[]
+  patentOfficeFee Int?           @map("patent_office_fee")
+
+  @@map("price_measurement")
+}
+
+model PriceService {
+  id                 Int              @id @default(autoincrement())
+  index              Int?
+  label              String
+  isAccent           Boolean          @default(false) @map("is_accent")
+  priceMeasurementId Int              @map("price_measurement_id")
+  priceMeasurement   PriceMeasurement @relation(fields: [priceMeasurementId], references: [id])
+
+  @@map("price_service")
+}
+
+enum ApplicantType {
+  INDIVIDUAL
+  COMPANY
+}
+
+enum OperationStatus {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+}
+
+enum OrderStatus {
+  INIT
+  PENDING
+  PAYMENTED
+}
+
+enum OrderType {
+  ALL
+  DESIGN
+  APPLICATION
+}
+
+enum PricingType {
+  DESIGN
+  APPLICATION
+  APPLICATION_WITH_DESIGN
+}
+
+enum TargetGender {
+  FEMALE
+  MALE
+  ALL
+}
+
+enum UserStatus {
+  NORMAL
+  DROPPED
+  SUSPENDED
+  DORMANT
+}
